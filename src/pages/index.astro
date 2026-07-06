@@ -118,6 +118,10 @@ import { PRODUCTS } from '../data/products';
       </div>
 
       <div class="cart-footer">
+        <div class="cart-date-picker">
+          <label for="order-date">📅 Fecha requerida para el encargo:</label>
+          <input type="date" id="order-date" name="order-date" required />
+        </div>
         <div class="cart-summary-row">
           <span>Subtotal</span>
           <span id="cart-subtotal">$0 CUP</span>
@@ -800,6 +804,35 @@ import { PRODUCTS } from '../data/products';
     padding: 1.5rem;
   }
 
+  .cart-date-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .cart-date-picker label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .cart-date-picker input[type="date"] {
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+  }
+
+  .cart-date-picker input[type="date"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+  }
+
   .cart-summary-row {
     display: flex;
     justify-content: space-between;
@@ -864,6 +897,27 @@ import { PRODUCTS } from '../data/products';
   const cartTotalEl = document.getElementById('cart-total');
   const checkoutWhatsappBtn = document.getElementById('checkout-whatsapp-btn');
   const cartCountEl = document.querySelector('.cart-count');
+  const orderDateEl = document.getElementById('order-date') as HTMLInputElement | null;
+
+  // Set minimum date (today + 3 days)
+  if (orderDateEl) {
+    const today = new Date();
+    today.setDate(today.getDate() + 3);
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    orderDateEl.min = `${yyyy}-${mm}-${dd}`;
+    
+    // Restore saved date
+    const savedDate = localStorage.getItem('el_lider_order_date');
+    if (savedDate) {
+      orderDateEl.value = savedDate;
+    }
+
+    orderDateEl.addEventListener('change', () => {
+      localStorage.setItem('el_lider_order_date', orderDateEl.value);
+    });
+  }
 
   // State
   let cart = [];
@@ -1118,8 +1172,22 @@ import { PRODUCTS } from '../data/products';
       return;
     }
 
+    const orderDate = orderDateEl?.value;
+    if (!orderDate) {
+      alert('Por favor, selecciona la fecha requerida para la entrega o recogida de tu encargo.');
+      orderDateEl?.focus();
+      return;
+    }
+
     const phoneNumber = '5350000000'; // Target phone number (editable or replaceable)
-    let message = '🍰 *NUEVO ENCARGO - DULCERÍA EL LÍDER* 🍰\n\nHola, me gustaría encargar los siguientes dulces:\n\n';
+    
+    // Format date nicely
+    const dateParts = orderDate.split('-');
+    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+    let message = '🍰 *NUEVO ENCARGO - DULCERÍA EL LÍDER* 🍰\n\n';
+    message += `📅 *FECHA REQUERIDA:* ${formattedDate}\n\n`;
+    message += 'Hola, me gustaría encargar los siguientes dulces:\n\n';
 
     let total = 0;
     cart.forEach((item, index) => {
