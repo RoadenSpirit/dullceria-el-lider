@@ -1,17 +1,1170 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import { PRODUCTS } from '../data/products';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Inicio - Alta Repostería por Encargo">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">Artesanal & Premium</span>
+      <h1>El Arte de la Repostería Fina</h1>
+      <p>Cakes exclusivos y bocados de alta calidad elaborados totalmente por encargo para hacer de tu celebración un momento inolvidable.</p>
+      <div class="hero-actions">
+        <a href="#catalogo" class="btn btn-primary">Ver la Carta</a>
+        <a href="#como-pedir" class="btn btn-outline">¿Cómo pedir?</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section / Como Pedir -->
+  <section id="como-pedir" class="info-section">
+    <div class="section-header">
+      <span class="subtitle">Paso a Paso</span>
+      <h2>¿Cómo funciona nuestro servicio por encargo?</h2>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">1</div>
+        <h3>Selecciona tus Dulces</h3>
+        <p>Explora nuestra carta exclusiva y elige tus cakes o bocaditos favoritos agregándolos al carrito de compras.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">2</div>
+        <h3>Personaliza tu Cake</h3>
+        <p>En el carrito, define los colores, la temática o añade una <strong>Impresión Comestible (+650 CUP)</strong> subiendo tu propia imagen.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">3</div>
+        <h3>Envía por WhatsApp</h3>
+        <p>Tu pedido se procesará automáticamente en un mensaje detallado para finalizar la cotización y agendar la fecha por WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog / Products Section -->
+  <section id="catalogo" class="catalog-section">
+    <div class="section-header">
+      <span class="subtitle">Exquisiteces</span>
+      <h2>Nuestra Carta de Especialidades</h2>
+      <div class="divider"></div>
+      
+      <!-- Category Filter -->
+      <div class="category-filters">
+        <button class="filter-btn active" data-category="all">Ver Todo</button>
+        <button class="filter-btn" data-category="cakes">Cakes</button>
+        <button class="filter-btn" data-category="minicakes">MiniCakes</button>
+        <button class="filter-btn" data-category="reposteria">Repostería</button>
+        <button class="filter-btn" data-category="salados">Salados</button>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+      {PRODUCTS.map(product => (
+        <div class="product-card" data-category={product.category}>
+          <div class="product-image-container">
+            <img src={product.image} alt={product.name} class="product-image" loading="lazy" />
+            <span class="product-badge">{product.category}</span>
+          </div>
+          <div class="product-info">
+            <h3>{product.name}</h3>
+            <p class="product-description">{product.description}</p>
+            <div class="product-meta">
+              <span class="product-price">
+                ${product.price} <span class="currency">CUP</span>
+                {product.priceNote && <span class="price-note">({product.priceNote})</span>}
+              </span>
+              <button 
+                class="add-to-cart-btn" 
+                data-id={product.id}
+                data-name={product.name}
+                data-price={product.price}
+                data-customizable={product.customizable ? "true" : "false"}
+              >
+                + Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Floating Cart Button -->
+  <button id="floating-cart-btn" class="floating-cart">
+    <span class="cart-icon">🛒</span>
+    <span class="cart-count">0</span>
+  </button>
+
+  <!-- Cart Drawer/Sidebar -->
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-header">
+        <h2>Tu Encargo</h2>
+        <button id="close-cart-btn" class="close-btn">&times;</button>
+      </div>
+      
+      <div id="cart-items-container" class="cart-items-container">
+        <!-- Rendered dynamically by JS -->
+        <div class="empty-cart-message">
+          <p>Tu carrito está vacío</p>
+          <a href="#catalogo" id="explore-btn" class="btn btn-outline btn-sm">Explorar la Carta</a>
+        </div>
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0 CUP</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Adicionales (Impresiones)</span>
+          <span id="cart-addons">$0 CUP</span>
+        </div>
+        <div class="cart-summary-row total-row">
+          <span>Total Estimado</span>
+          <span id="cart-total">$0 CUP</span>
+        </div>
+        <div class="cart-note-warning">
+          ⚠️ Nota: La decoración final y precio de cakes personalizados se acordará por WhatsApp. Decoraciones complejas pueden variar el precio.
+        </div>
+        <button id="checkout-whatsapp-btn" class="btn btn-primary btn-block">
+          Confirmar Pedido vía WhatsApp 💬
+        </button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    height: 80vh;
+    min-height: 500px;
+    background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(88, 0, 10, 0.75), rgba(12, 12, 12, 0.6));
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    background-color: var(--accent-color);
+    color: var(--primary-dark);
+    padding: 0.4rem 1.2rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    color: var(--text-white);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero p {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  /* General Components */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+    color: var(--text-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+    background: linear-gradient(135deg, #f7d25b, var(--accent-color));
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--text-white);
+    border: 2px solid var(--text-white);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--text-white);
+    color: var(--primary-dark);
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  /* Sections general */
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-header .subtitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-dark);
+  }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 1rem auto 0;
+  }
+
+  /* Info Section / Cómo Pedir */
+  .info-section {
+    padding: 6rem 2rem;
+    background-color: var(--bg-secondary);
+  }
+
+  .steps-grid {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+  }
+
+  .step-card {
+    background-color: var(--bg-card);
+    padding: 3rem 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    position: relative;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-color);
+  }
+
+  .step-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    border: 2px solid var(--accent-color);
+  }
+
+  .step-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .step-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* Catalog / Products Section */
+  .catalog-section {
+    padding: 6rem 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .category-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Products Grid */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .product-card {
+    background-color: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .product-image-container {
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .product-card:hover .product-image {
+    transform: scale(1.05);
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(140, 13, 27, 0.9);
+    color: var(--text-white);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 1px solid var(--accent-color);
+  }
+
+  .product-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .product-info h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-dark);
+  }
+
+  .product-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .product-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+  }
+
+  .product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .product-price .currency {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .price-note {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-light);
+    display: block;
+  }
+
+  .add-to-cart-btn {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+  }
+
+  .add-to-cart-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+  }
+
+  /* Floating Cart Button */
+  .floating-cart {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--text-white);
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(140, 13, 27, 0.4);
+    cursor: pointer;
+    z-index: 99;
+    border: 2px solid var(--accent-color);
+    transition: transform var(--transition-fast);
+  }
+
+  .floating-cart:hover {
+    transform: scale(1.05);
+  }
+
+  .cart-icon {
+    font-size: 1.5rem;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--accent-color);
+    color: var(--text-primary);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--primary-dark);
+  }
+
+  /* Cart Drawer/Sidebar */
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    visibility: hidden;
+    transition: visibility var(--transition-normal);
+  }
+
+  .cart-drawer.open {
+    visibility: visible;
+  }
+
+  .cart-drawer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+
+  .cart-drawer.open .cart-drawer-overlay {
+    opacity: 1;
+  }
+
+  .cart-drawer-content {
+    position: absolute;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    background-color: var(--bg-primary);
+    box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
+    transition: right var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-drawer.open .cart-drawer-content {
+    right: 0;
+  }
+
+  .cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+
+  .cart-items-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  .empty-cart-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+  }
+
+  .empty-cart-message p {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Cart Item Card */
+  .cart-item {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .cart-item-title h4 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+  }
+
+  .cart-item-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+  }
+
+  .cart-item-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .quantity-controller {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    background-color: var(--bg-secondary);
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+
+  .qty-btn:hover {
+    background-color: var(--border-color);
+  }
+
+  .qty-value {
+    width: 36px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .remove-item-btn {
+    background: none;
+    border: none;
+    color: #b81d24;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Customization block inside cart item */
+  .cart-item-customization {
+    background-color: var(--bg-secondary);
+    padding: 0.85rem;
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--accent-color);
+    margin-top: 0.75rem;
+  }
+
+  .customization-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .custom-note-textarea {
+    width: 100%;
+    height: 60px;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    resize: none;
+    margin-bottom: 0.75rem;
+  }
+
+  .custom-note-textarea::placeholder {
+    color: var(--text-light);
+  }
+
+  .edible-print-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+
+  .edible-print-option input {
+    accent-color: var(--primary-color);
+    width: 16px;
+    height: 16px;
+  }
+
+  .upload-area {
+    margin-top: 0.5rem;
+    border: 1px dashed var(--accent-dark);
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    background-color: var(--bg-card);
+    position: relative;
+    cursor: pointer;
+  }
+
+  .upload-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: block;
+  }
+
+  .upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .file-preview {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .file-preview img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+  }
+
+  /* Cart Footer */
+  .cart-footer {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+  }
+
+  .cart-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .total-row {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 2px double var(--border-color);
+  }
+
+  .cart-note-warning {
+    background-color: #FFFbeb;
+    border: 1px solid #fef3c7;
+    color: #b45309;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    border-radius: var(--border-radius-sm);
+    margin: 1rem 0;
+    line-height: 1.4;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 2.25rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    .hero-actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .btn {
+      width: 100%;
+    }
+    .cart-drawer-content {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // DOM Elements
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const productCards = document.querySelectorAll('.product-card');
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  const floatingCartBtn = document.getElementById('floating-cart-btn');
+  const closeCartBtn = document.getElementById('close-cart-btn');
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartOverlay = document.querySelector('.cart-drawer-overlay');
+  const cartItemsContainer = document.getElementById('cart-items-container');
+  const cartSubtotalEl = document.getElementById('cart-subtotal');
+  const cartAddonsEl = document.getElementById('cart-addons');
+  const cartTotalEl = document.getElementById('cart-total');
+  const checkoutWhatsappBtn = document.getElementById('checkout-whatsapp-btn');
+  const cartCountEl = document.querySelector('.cart-count');
+
+  // State
+  let cart = [];
+
+  // 1. Catalog Filtering
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Toggle active class on buttons
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      const selectedCategory = button.getAttribute('data-category');
+
+      // Filter product cards
+      productCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+          (card as HTMLElement).style.display = 'flex';
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 2. Open/Close Cart Drawer
+  const openCart = () => {
+    cartDrawer?.classList.add('open');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling background
+  };
+
+  const closeCart = () => {
+    cartDrawer?.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  floatingCartBtn?.addEventListener('click', openCart);
+  closeCartBtn?.addEventListener('click', closeCart);
+  cartOverlay?.addEventListener('click', closeCart);
+
+  // 3. Add to Cart Handler
+  addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.getAttribute('data-id');
+      const name = button.getAttribute('data-name');
+      const price = parseFloat(button.getAttribute('data-price') || '0');
+      const customizable = button.getAttribute('data-customizable') === 'true';
+
+      const existingItem = cart.find(item => item.id === id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id,
+          name,
+          price,
+          quantity: 1,
+          customizable,
+          note: '',
+          ediblePrint: false,
+          fileName: ''
+        });
+      }
+
+      updateCart();
+      openCart();
+    });
+  });
+
+  // 4. Update Cart State & UI
+  function updateCart() {
+    // Save to LocalStorage
+    localStorage.setItem('el_lider_cart', JSON.stringify(cart));
+    
+    // Update Badge Count
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    if (cartCountEl) cartCountEl.textContent = totalItems.toString();
+
+    // Render Items
+    renderCartItems();
+
+    // Calculate Prices
+    calculateTotal();
+  }
+
+  function renderCartItems() {
+    if (!cartItemsContainer) return;
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = `
+        <div class="empty-cart-message">
+          <p>Tu carrito está vacío</p>
+          <button id="explore-btn-inline" class="btn btn-outline btn-sm" style="color:var(--primary-color); border-color:var(--primary-color)">Explorar la Carta</button>
+        </div>
+      `;
+      
+      document.getElementById('explore-btn-inline')?.addEventListener('click', () => {
+        closeCart();
+        window.location.hash = '#catalogo';
+      });
+      return;
+    }
+
+    let html = '';
+    cart.forEach((item, index) => {
+      html += `
+        <div class="cart-item" data-index="${index}">
+          <div class="cart-item-header">
+            <div class="cart-item-title">
+              <h4>${item.name}</h4>
+            </div>
+            <span class="cart-item-price">$${item.price * item.quantity} CUP</span>
+          </div>
+          
+          <div class="cart-item-actions">
+            <div class="quantity-controller">
+              <button class="qty-btn minus" data-index="${index}">-</button>
+              <span class="qty-value">${item.quantity}</span>
+              <button class="qty-btn plus" data-index="${index}">+</button>
+            </div>
+            <button class="remove-item-btn" data-index="${index}">Eliminar</button>
+          </div>
+          
+          ${item.customizable ? `
+            <div class="cart-item-customization">
+              <span class="customization-title">Personalización del Cake:</span>
+              <textarea 
+                class="custom-note-textarea" 
+                data-index="${index}" 
+                placeholder="Especifica aquí colores, nombre/edad, diseño, decoración o temática que te gustaría..."
+              >${item.note || ''}</textarea>
+              
+              <label class="edible-print-option">
+                <input 
+                  type="checkbox" 
+                  class="edible-print-checkbox" 
+                  data-index="${index}" 
+                  ${item.ediblePrint ? 'checked' : ''}
+                />
+                Añadir Impresión Comestible (+650 CUP)
+              </label>
+
+              ${item.ediblePrint ? `
+                <div class="upload-area">
+                  <span class="upload-label">${item.fileName ? '✓ Imagen Cargada' : 'Subir imagen para impresión'}</span>
+                  <input type="file" class="upload-input" data-index="${index}" accept="image/*" />
+                  ${item.fileName ? `<div class="file-preview"><span>📁 ${item.fileName}</span></div>` : ''}
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    });
+
+    cartItemsContainer.innerHTML = html;
+
+    // Attach Event Listeners to Dynamically Rendered Cart Elements
+    attachCartEvents();
+  }
+
+  function attachCartEvents() {
+    // Quantity Plus
+    document.querySelectorAll('.qty-btn.plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        cart[index].quantity += 1;
+        updateCart();
+      });
+    });
+
+    // Quantity Minus
+    document.querySelectorAll('.qty-btn.minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        if (cart[index].quantity > 1) {
+          cart[index].quantity -= 1;
+        } else {
+          cart.splice(index, 1);
+        }
+        updateCart();
+      });
+    });
+
+    // Remove Item
+    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        cart.splice(index, 1);
+        updateCart();
+      });
+    });
+
+    // Custom note typing
+    document.querySelectorAll('.custom-note-textarea').forEach(textarea => {
+      textarea.addEventListener('input', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        cart[index].note = (e.target as HTMLTextAreaElement).value;
+        // Save to localStorage quietly without re-rendering to keep keyboard focus
+        localStorage.setItem('el_lider_cart', JSON.stringify(cart));
+      });
+    });
+
+    // Edible print checkbox toggle
+    document.querySelectorAll('.edible-print-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        cart[index].ediblePrint = (e.target as HTMLInputElement).checked;
+        if (!cart[index].ediblePrint) {
+          cart[index].fileName = '';
+        }
+        updateCart();
+      });
+    });
+
+    // Image File Upload Action
+    document.querySelectorAll('.upload-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          cart[index].fileName = file.name;
+          updateCart();
+        }
+      });
+    });
+  }
+
+  function calculateTotal() {
+    let subtotal = 0;
+    let addonsTotal = 0;
+
+    cart.forEach(item => {
+      subtotal += item.price * item.quantity;
+      if (item.ediblePrint) {
+        addonsTotal += 650 * item.quantity; // 650 CUP per item that has print option enabled
+      }
+    });
+
+    const total = subtotal + addonsTotal;
+
+    if (cartSubtotalEl) cartSubtotalEl.textContent = `$${subtotal} CUP`;
+    if (cartAddonsEl) cartAddonsEl.textContent = `$${addonsTotal} CUP`;
+    if (cartTotalEl) cartTotalEl.textContent = `$${total} CUP`;
+  }
+
+  // 5. Checkout via WhatsApp
+  checkoutWhatsappBtn?.addEventListener('click', () => {
+    if (cart.length === 0) {
+      alert('Tu carrito está vacío. Agrega algunos dulces antes de realizar tu encargo.');
+      return;
+    }
+
+    const phoneNumber = '5350000000'; // Target phone number (editable or replaceable)
+    let message = '🍰 *NUEVO ENCARGO - DULCERÍA EL LÍDER* 🍰\n\nHola, me gustaría encargar los siguientes dulces:\n\n';
+
+    let total = 0;
+    cart.forEach((item, index) => {
+      const itemSubtotal = item.price * item.quantity;
+      let addonText = '';
+      let itemTotal = itemSubtotal;
+      
+      if (item.ediblePrint) {
+        addonText = ' (Con Impresión Comestible: +$650 CUP)';
+        itemTotal += 650 * item.quantity;
+      }
+      
+      total += itemTotal;
+
+      message += `*${index + 1}. ${item.name}* (x${item.quantity})\n`;
+      message += `   - Precio base: $${item.price} CUP c/u\n`;
+      if (item.customizable && item.note) {
+        message += `   - Nota: _"${item.note}"_\n`;
+      }
+      if (item.ediblePrint) {
+        message += `   - Adicional: Impresión Comestible [Enviaré las imágenes por este chat]${addonText}\n`;
+      }
+      message += `   - Subtotal artículo: *$${itemTotal} CUP*\n\n`;
+    });
+
+    message += `----------------------------------\n`;
+    message += `💵 *TOTAL ESTIMADO: $${total} CUP*\n\n`;
+    message += `⚠️ _Entiendo que el precio final y la decoración final se concretarán y confirmarán en este chat._\n\n`;
+    message += `📍 Por favor, confírmenme disponibilidad para agendar la fecha. ¡Muchas gracias!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    // Open WhatsApp
+    window.open(whatsappUrl, '_blank');
+  });
+
+  // Initialize cart from localStorage if exists
+  const savedCart = localStorage.getItem('el_lider_cart');
+  if (savedCart) {
+    try {
+      cart = JSON.parse(savedCart);
+      updateCart();
+    } catch (e) {
+      cart = [];
+    }
+  }
+</script>

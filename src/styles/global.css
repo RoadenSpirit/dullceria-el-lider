@@ -1,0 +1,86 @@
+/* Design System for Dulcería El Líder */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+:root {
+  /* Color Palette */
+  --primary-color: #8C0D1B;      /* Premium Burgundy / Red */
+  --primary-light: #B81D24;      /* Lighter Crimson */
+  --primary-dark: #58000A;       /* Deep Burgundy */
+  --accent-color: #D4AF37;       /* Classic Gold */
+  --accent-light: #F3E5AB;       /* Soft Light Gold */
+  --accent-dark: #AA7C11;        /* Dark Antique Gold */
+  
+  /* Neutral Palette */
+  --bg-primary: #FFFDF9;         /* Creamy warm white */
+  --bg-secondary: #FBF7EE;       /* Warm secondary cream */
+  --bg-card: #FFFFFF;
+  --text-primary: #1C1917;       /* Very dark brown/charcoal */
+  --text-secondary: #57534E;     /* Medium warm gray */
+  --text-light: #878580;         /* Light muted gray */
+  --text-white: #FFFFFF;
+  
+  /* Borders and Shadow */
+  --border-color: #E7E2D8;
+  --border-gold: rgba(212, 175, 55, 0.3);
+  --shadow-sm: 0 2px 4px rgba(140, 13, 27, 0.04);
+  --shadow-md: 0 4px 12px rgba(140, 13, 27, 0.08);
+  --shadow-lg: 0 12px 24px rgba(140, 13, 27, 0.12);
+  --shadow-gold: 0 4px 14px rgba(212, 175, 55, 0.2);
+  
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  
+  /* Layout */
+  --max-width: 1200px;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--primary-dark);
+  line-height: 1.25;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

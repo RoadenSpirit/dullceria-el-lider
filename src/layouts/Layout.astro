@@ -1,0 +1,273 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { 
+  title, 
+  description = "Dulcería El Líder - Repostería artesanal fina y decoraciones personalizadas por encargo en La Habana. Cakes, cupcakes, bocaditos y más con calidad premium." 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title} | Dulcería El Líder</title>
+    <meta name="title" content={`${title} | Dulcería El Líder`} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | Dulcería El Líder`} />
+    <meta property="og:description" content={description} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={`${title} | Dulcería El Líder`} />
+    <meta property="twitter:description" content={description} />
+  </head>
+  <body>
+    <!-- Premium Header -->
+    <header class="main-header">
+      <div class="header-container">
+        <a href="/" class="logo-area">
+          <span class="logo-title">El Líder</span>
+          <span class="logo-subtitle">DULCERÍA ARTESANAL</span>
+        </a>
+        <nav class="main-nav">
+          <a href="#catalogo" class="nav-link">Nuestra Carta</a>
+          <a href="#como-pedir" class="nav-link">¿Cómo pedir?</a>
+          <a href="#contacto" class="nav-link font-accent">Hacer Encargo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <slot />
+    </main>
+
+    <!-- Premium Footer -->
+    <footer id="contacto" class="main-footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>El Líder</h3>
+          <p class="footer-desc">Repostería fina elaborada con ingredientes seleccionados y decoraciones de gran valor. Cada dulce es una obra de arte única hecha por encargo.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Contacto y Encargos</h4>
+          <p>📍 La Habana, Cuba</p>
+          <p>📱 WhatsApp: <a href="https://wa.me/5350000000" class="highlight-gold">+53 5000 0000</a></p>
+          <p>⏰ Pedidos con mínimo 3-5 días de antelación.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Horario de Atención</h4>
+          <p>Lunes a Sábado</p>
+          <p>9:00 AM - 6:00 PM</p>
+          <p class="warning-text">⚠️ No contamos con punto de venta físico. Solo trabajamos bajo pedido previo.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {new Date().getFullYear()} Dulcería El Líder. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  /* Header Styles */
+  .main-header {
+    background-color: rgba(255, 253, 249, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all var(--transition-fast);
+  }
+
+  .header-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .logo-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--accent-dark);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    position: relative;
+    padding: 0.5rem 0;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--primary-color);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .font-accent {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--text-white);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--accent-color);
+    transition: all var(--transition-fast);
+  }
+
+  .font-accent::after {
+    display: none;
+  }
+
+  .font-accent:hover {
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  }
+
+  /* Content */
+  .main-content {
+    flex: 1;
+  }
+
+  /* Footer Styles */
+  .main-footer {
+    background-color: var(--primary-dark);
+    color: var(--text-white);
+    padding: 4rem 2rem 1.5rem;
+    border-top: 3px solid var(--accent-color);
+  }
+
+  .footer-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+  }
+
+  .footer-section h3 {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+  }
+
+  .footer-section h4 {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 1.2rem;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  .footer-desc {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+  }
+
+  .footer-section p {
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .highlight-gold {
+    color: var(--accent-color);
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .highlight-gold:hover {
+    color: var(--accent-light);
+  }
+
+  .warning-text {
+    font-size: 0.85rem;
+    color: var(--accent-light) !important;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.75rem;
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--accent-color);
+  }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 3rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .main-nav {
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>
