@@ -2,8 +2,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const ARTIFACT_DIR = './screenshots';
-const SCREENSHOTS_DIR = path.join(ARTIFACT_DIR, 'screenshots');
+const SCREENSHOTS_DIR = path.join(__dirname, '../screenshots');
 
 if (!fs.existsSync(SCREENSHOTS_DIR)) {
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
